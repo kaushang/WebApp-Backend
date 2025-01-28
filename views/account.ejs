@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account - <%=user.username%></title>
+    <link rel="stylesheet" href="/stylesheets/styles.css">
+</head>
+
+<body>
+    <nav class="nav-bar">
+        <div class="name user"> <%=user.name%></div>
+        <div class="nav-links">
+            <a class="user" href="/home">Go back</a>
+            <a id="home-logout" class="nav-items" href="#">Log out</a>
+        </div>
+    </nav>
+    <section>
+        <div class="main-cont">
+            <div class="settings">
+                <a href="" class="post settings-post content" id="changePasswordBtn">
+                    Change password
+                </a>
+                <a href="" class="post settings-post content" id="deleteAccountBtn"
+                    style="color: rgba(255, 0, 0, 0.7);">
+                    Delete account 
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Change password window -->
+    <div id="passwordModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <h2>Change Password</h2>
+            <form class="updatePasswordForm" action="/updatepassword" method="POST">
+                <input required type="password" placeholder="Current Password" name="currentPassword">
+                <input required type="password" placeholder="New Password" name="newPassword">
+                <input required type="password" placeholder="Confirm New Password" name="newPasswordAgain">
+                <input onclick="getData()" class="submit-form" type="submit" value="Update Passsword"></input>
+                <span id="currentPasswordError"
+                    style="background-color: #0f1319; font-size: smaller; display: block;"></span>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete account window -->
+    <div id="accountModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModal2">&times;</span>
+            <h2 style="margin-bottom: 30px;" >Delete Account</h2>
+            <form class="deleteAccountForm" action="/deleteaccount" method="POST">
+                <input id="delAcc" type="password" placeholder="Enter your password" name="confirmPassword" required>
+                <input onclick="deleteAcc()" class="submit-form" type="submit"
+                    style="background-color: rgba(255, 0, 0, 0.6);" value="Delete Account"></input>
+                <span id="wrongPasswordError"
+                    style="background-color: #0f1319; font-size: smaller; display: block;"></span>
+            </form>
+        </div>
+    </div>
+
+    <!-- Password changed message window -->
+    <div id="passwordChanged" class="modal">
+        <div class="modal-content alert1">
+            <h3 style="background-color: #0f1319; color: rgba(0, 200, 0, 0.8);">Password Changed.</h3>
+            <div style="width: 100%; display: flex; justify-content: end; align-items: end; background-color: #0f1319;">
+                <input id="close1" class="submit-form post-submit" type="submit" value="Dismiss"></input>
+            </div>
+        </div>
+    </div>
+
+    <!-- Account deleted message window -->
+    <div id="accountDeleted" class="modal">
+        <div class="modal-content alert2">
+            <h3 style="background-color: #0f1319;">Account Deleted.</h3>
+            <div style="width: 100%; display: flex; justify-content: end; align-items: end; background-color: #0f1319;">
+                <input id="close2" class="submit-form post-submit" type="submit" value="Dismiss"></input>
+            </div>
+        </div>
+    </div>
+
+    <!-- Log out confirmation window -->
+    <div id="logout" class="modal">
+        <div class="modal-content alert1">
+            <h3>Are you sure you want to log out?</h3>
+            <div class="btns">
+                <input id="cancelBtn" style="background-color: rgba(79, 100, 131, 0.2);" class="submit-form post-submit"
+                    type="submit" value="Cancel"></input>
+                <input id="logoutBtn" style="background-color: rgba(200, 0, 0, 0.9);" onclick=""
+                    class="submit-form post-submit" type="submit" value="Log out"></input>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Change password window
+        const modal = document.getElementById("passwordModal");
+        const changePasswordBtn = document.getElementById("changePasswordBtn");
+        const closeModal = document.getElementById("closeModal");
+        const errorMessage = document.getElementById("currentPasswordError");
+
+        changePasswordBtn.addEventListener("click", (event) => {
+            event.preventDefault(); 
+            errorMessage.textContent = "";
+            modal.style.display = "block";
+        });
+
+        closeModal.addEventListener("click", () => {
+            errorMessage.textContent = "";
+            modal.style.display = "none";
+        });
+
+        // function to get response from the backend 
+        async function getData() {
+            changePasswordBtn.removeAttribute("disabled");
+            const url = "/updatepassword";
+            const data = {
+                currentPassword: document.querySelector('input[name="currentPassword"]').value,
+                newPassword: document.querySelector('input[name="newPassword"]').value,
+                newPasswordAgain: document.querySelector('input[name="newPasswordAgain"]').value
+            };
+            if (data.currentPassword === "" || data.newPassword === "" || data.newPasswordAgain === "") {
+                changePasswordBtn.setAttribute("disabled");
+            }
+            event.preventDefault();
+            const errorMessage = document.getElementById("currentPasswordError");
+            errorMessage.textContent = "";
+            const response = await fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
+            const result = await response.json();
+            if (response.ok) {
+                displayMessage("success", result.message);
+                document.getElementById("passwordModal").style.display = 'none';
+                document.getElementById("passwordChanged").style.display = 'block';
+            } else {
+                displayMessage("error", result.message);
+            }
+        }
+        // function to display message according to the response
+        function displayMessage(type, message) {
+            const errorMessage = document.getElementById("currentPasswordError");
+            errorMessage.textContent = "";
+            errorMessage.style.color = type === "error" ? "red" : "green";
+            errorMessage.textContent = message;
+        }
+
+
+        // Delete account window
+        const modal2 = document.getElementById("accountModal");
+        const deleteAccountBtn = document.getElementById("deleteAccountBtn");
+        const closeModal2 = document.getElementById("closeModal2");
+
+        deleteAccountBtn.addEventListener("click", (event) => {
+            event.preventDefault();
+            modal2.style.display = "block";
+        });
+
+        closeModal2.addEventListener("click", () => {
+            modal2.style.display = "none";
+        });
+
+        const alertBox1 = document.getElementById("passwordChanged");
+        const alertBox2 = document.getElementById("accountDeleted");
+        window.addEventListener("click", (e) => {
+            if (e.target === modal || e.target === modal2 || e.target === alertBox1 || e.target === alertBox2) {
+                modal.style.display = "none";
+                modal2.style.display = "none";
+                alertBox1.style.display = "none";
+                alertBox2.style.display = "none";
+            }
+        });
+
+        // function to get response from the backend and show message corresponding to the response
+        async function deleteAcc() {
+            const url = "/deleteaccount";
+            const data = {
+                currentPassword: document.querySelector('input[name="confirmPassword"]').value,
+            };
+            if (data.currentPassword === "") {
+                deleteAccountBtn.setAttribute("disabled");
+            }
+            event.preventDefault();
+            const errorMessage = document.getElementById("wrongPasswordError");
+            errorMessage.textContent = "";
+            const response = await fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
+            const result = await response.json();
+            if (response.ok) {
+                errorMessage.style.color = "green";
+                errorMessage.textContent = "";
+                errorMessage.textContent = result.message;
+                document.getElementById("accountModal").style.display = "none";
+                document.getElementById("accountDeleted").style.display = "block";
+            } else {
+                errorMessage.style.color = "red";
+                errorMessage.textContent = "";
+                errorMessage.textContent = result.message;
+            }
+        }
+
+        document.getElementById('close1').addEventListener("click", () => {
+            alertBox1.style.display = "none";
+        });
+        document.getElementById('close2').addEventListener("click", () => {
+            alertBox2.style.display = "none";
+            document.location.replace('/');
+        });
+
+        // Login functionality
+        const logout = document.getElementById("logout");
+        const logoutLink = document.getElementById("home-logout");
+        const cancelBtn = document.getElementById("cancelBtn");
+        const logoutBtn = document.getElementById("logoutBtn");
+
+        logoutLink.addEventListener("click", (event) => {
+            logout.style.display = "block";
+        });
+        cancelBtn.addEventListener("click", (event) => {
+            logout.style.display = "none";
+        });
+        window.addEventListener("click", (e) => {
+            if (e.target === logout) {
+                logout.style.display = "none";
+            }
+        });
+        logoutBtn.addEventListener("click", (event) => {
+            document.location.replace('/logout');
+        });
+    </script>
+</body>
+
+</html>
