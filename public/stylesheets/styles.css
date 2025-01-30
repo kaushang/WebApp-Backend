@@ -21,7 +21,9 @@ form {
     padding: 20px;
     background-color: #0f1319;
     width: 30%;
+    max-width: 400px;
     height: 80vh;
+    max-height: 600px;
 }
 .create-post, .post {
     background-color: #0f1319;
@@ -30,6 +32,7 @@ form {
     border-radius: 20px;
     border-top: 2px solid rgba(0, 255, 255, 0.8);
     margin: 0px 0px 40px 0px;
+    width: 100%;
 }
 .post {
     margin: 16px 0px 0px 0px;
@@ -60,11 +63,10 @@ input {
     background-color: #ffffff00;
 }
 .submit-form {
-    padding: 0px; 
     background-color: rgb(0, 100, 209); 
     color: white;
     border: none;
-    transition: 0.1s;
+        transition: 0.1s;
     margin-top: 10px;
 }
 .submit-form:hover {
@@ -80,9 +82,47 @@ input {
     color: rgba(255, 255, 255, 0.429);
 }
 .login {
+    margin-bottom: 60px;
     font-size: small;
     background-color: #0f1319;
     color: #ffffff;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .form-section {
+        width: 40%;
+    }
+}
+
+@media (max-width: 768px) {
+    .form-section {
+        height: fit-content;
+        width: 60%;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-section {
+        height: fit-content;
+        width: 90%;
+        padding: 10px;
+    }
+    
+    input {
+        font-size: 14px;
+        height: 38px;
+    }
+    
+    .submit-form {
+        font-size: 14px;
+        height: 40px;
+    }
+
+    .login {
+        font-size: 12px;
+    }
 }
 section {
     width: 100%;
@@ -93,6 +133,8 @@ section {
 }
 .main-cont {
     width: 38%;
+    max-width: 600px;
+    min-width: 320px;
 }
 .profile-heading, .sub-heading {
     width: fit-content;
@@ -100,12 +142,13 @@ section {
 .nav-bar, .edit-nav-bar {
     margin: auto;
     width: 38%;
+    max-width: 600px;
+    min-width: 320px;
     height: 10vh;
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
 }
-.nav-items, .user {
+.nav-items {
     background-color: rgba(200, 0, 0, 0.9);
     border-radius: 6px;
     font-size: medium;
@@ -113,12 +156,16 @@ section {
     align-items: center;
     text-decoration: none;
     color: white;
+    /* width: 50%; */
     padding: 15px 10px 15px 10px;
     margin: 20px 20px 20px 10px;
 }
-.user {
+.account {
     margin: 20px 10px 20px 20px;
     background-color: #4f6483;
+}
+.user {
+    background-color: rgba(255, 255, 255, 0);
 }
 .name {
     font-size: large;
@@ -173,6 +220,7 @@ section {
     border-top: 1px solid aqua;
     height: 80%;
     width: 30%; 
+    min-width: 300px;
     border-radius: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
@@ -222,4 +270,68 @@ h2, h3 {
 .nav-links {
     display: flex;
     flex-direction: row;
+}
+@media (max-width: 1024px) {
+    .main-cont, .nav-bar {
+        width: 50%;
+    }
+    .nav-bar {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-cont, .nav-bar {
+        width: 80%;
+    }
+    .nav-bar {
+        padding: 10px;
+        justify-content: space-between;
+    }
+    .nav-links {
+        flex-direction: row;
+        align-items: flex-end;
+    }
+    .nav-items, .user {
+        font-size: small;
+        padding: 8px 12px;
+        margin: 5px;
+    }
+    .modal-content {
+        width: 80%;
+    }
+}
+
+@media (max-width: 480px) {
+    .user {
+        width: fit-content;
+        font-size: large;
+    }
+    .main-cont, .nav-bar {
+        width: 90%;
+    }
+    .nav-bar {
+        flex-direction: row;
+        align-items: center;
+        text-align: center;
+    }
+    .nav-links {
+        flex-direction: row;
+        align-items: center;
+    }
+    .nav-items {
+        text-align: center;
+        padding: 10px;
+    }
+    .create-post {
+        padding: 15px;
+    }
+    .submit-form {
+        width: 100%;
+    }
+    .modal-content {
+        width: 90%;
+        padding: 15px;
+    }
 }
