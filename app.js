@@ -15,8 +15,9 @@ mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
-.then(() => console.log('MongoDB connected'))
-.catch(err => console.error(err));
+    .then(() => console.log('MongoDB connected'))
+    .catch(err => console.error(err));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
@@ -32,11 +33,17 @@ app.get('/', isLoggedIn, (req, res) => {
 });
 
 app.post('/create', async (req, res) => {
+
     const { email, username, name, password } = req.body;
     const alreadyCreated = await userModel.findOne({ email });
+    const usernameTaken = await userModel.findOne({ username });
     if (alreadyCreated) {
-        return res.status(404).send("User already exists :(");
-    } else {
+        return res.status(400).json({ message: "User already exists" });
+    }
+    else if (usernameTaken) {
+        return res.status(400).json({ message: "Username is taken, Ty choosing a different one" });
+    }
+    else {
         bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(password, salt, async (err, hash) => {
                 await userModel.create({
@@ -47,7 +54,7 @@ app.post('/create', async (req, res) => {
                 });
                 let token = jwt.sign({ email }, 'xyz');
                 res.cookie("token", token);
-                res.redirect('/home');
+                return res.status(200).json({ message: "User created" });
             });
         });
     }
@@ -124,7 +131,7 @@ app.get('/edit/:id', isLoggedIn, async (req, res) => {
 
 app.post('/update/:id', isLoggedIn, async (req, res) => {
     if (req.user.email) {
-        const post = await postModel.findOneAndUpdate({ _id: req.params.id }, { content: req.body.content });
+        await postModel.findOneAndUpdate({ _id: req.params.id }, { content: req.body.content });
         res.redirect("/home");
     } else {
         res.redirect('/login');
@@ -197,6 +204,39 @@ app.post("/deleteaccount", isLoggedIn, async (req, res) => {
                 return res.status(400).json({ message: "Wrong password" });
             }
         });
+    } else {
+        res.redirect('/login');
+    }
+});
+
+app.post("/updateusername", isLoggedIn, async (req, res) => {
+    if (req.user.email) {
+        const user = await userModel.findOne({ email: req.user.email });
+        if (!user) {
+            res.status(400).json({ message: "User does not exist" });
+        } else {
+            if (user.username === req.body.username) {
+                res.status(400).json({ message: "New username can not be same as old username" });
+            } else {
+                const alreadyExist = await userModel.findOne({ username: req.body.username });
+                if (alreadyExist) {
+                    res.status(400).json({ message: "This username is taken, choose a different one" });
+                }
+                else {
+                    await userModel.findOneAndUpdate({ email: req.user.email }, { username: req.body.username });
+                    res.status(200).json({ message: "Username updated" });
+                }
+            }
+        }
+    } else {
+        res.redirect('/login');
+    }
+});
+
+app.post("/updatename", isLoggedIn, async (req, res) => {
+    if (req.user.email) {
+        await userModel.findOneAndUpdate({ email: req.user.email }, { name: req.body.name });
+        res.status(200).json({ message: "Name updated" });
     } else {
         res.redirect('/login');
     }
