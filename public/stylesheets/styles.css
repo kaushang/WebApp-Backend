@@ -152,11 +152,10 @@ section {
     background-color: rgba(200, 0, 0, 0.9);
     border-radius: 6px;
     font-size: medium;
-    display: flex;
-    align-items: center;
     text-decoration: none;
     color: white;
-    /* width: 50%; */
+    display: flex;
+    align-items: center;
     padding: 15px 10px 15px 10px;
     margin: 20px 20px 20px 10px;
 }
@@ -165,6 +164,7 @@ section {
     background-color: #4f6483;
 }
 .user {
+    align-items: start;
     background-color: rgba(255, 255, 255, 0);
 }
 .name {
@@ -215,16 +215,16 @@ section {
 }
 .modal-content {
     background-color: #0f1319;
-    margin: 10vh auto;
+    margin: 13vh auto;
     padding: 20px;
     border-top: 1px solid aqua;
-    height: 80%;
-    width: 30%; 
+    height: 74%;
+    width: 26%; 
     min-width: 300px;
     border-radius: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
-.alert1, .alert2 {
+.alert1, .alert2, .alert3, .alert4 {
     margin: 40vh auto; 
     height: 18vh;
 }
