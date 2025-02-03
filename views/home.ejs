@@ -13,7 +13,9 @@
 
 <body>
     <nav class="nav-bar">
-        <div class="nav-items user"> <%=user.name%></div>
+        <div class="nav-items user">
+            <%=user.name%>
+        </div>
         <div class="nav-links">
             <a class="nav-items account" href="/account">Account</a>
             <a id="home-logout" class="nav-items" href="#">Log out</a>
@@ -37,20 +39,35 @@
                         <p class="sub-heading">Your posts</p>
                         <%post.reverse().forEach(function(element) { %>
                             <div class="post">
-                                <h5 class="content user-name">@<%=user.username%>
-                                </h5>
+
+                                <div class="menu-container">
+                                    <h5 class="content user-name">@<%=user.username%>
+                                    </h5>
+                                    <button class="menu-button" onclick="toggleMenu(event)">⋮</button>
+                                    <div class="menu-dropdown" id="menu">
+                                        <a href="/edit/<%=element._id%>">Edit</a>
+                                        <a href="/delete/<%=element._id%>">Delete</a>
+                                    </div>
+                                </div>
+
                                 <p class="content">
                                     <%=element.content%>
                                 </p>
-                                <div class="links">
-                                    <a class="links" style="border-right: 1px solid gray; padding-right: 10px;"
-                                        href="/edit/<%=element._id%>">Edit</a>
-                                    <a class="links" style="padding-left: 5px;"
-                                        href="/delete/<%=element._id%>">Delete</a>
-                                </div>
+                                <% const date=element.date; %>
+                                    <% const dateObj=new Date(date); %>
+                                        <% const options={ hour: "2-digit" , minute: "2-digit" , hour12: true }; %>
+                                            <% const formattedTime=dateObj.toLocaleTimeString("en-GB", options); %>
+                                                <% const shortDayName=dateObj.toLocaleDateString("en-US",
+                                                    {weekday: "short" }); %>
+
+                                                    <p class="time" style="padding: 0px 10px 0px 0px; ">
+                                                        <%= shortDayName %>, <%=formattedTime%>
+                                                    </p>
+
+
                             </div>
-                        <%})%>
-                    <%}%>
+                            <%})%>
+                                <%}%>
             </div>
         </div>
     </section>
@@ -88,6 +105,24 @@
             document.location.replace('/logout');
         });
 
+
+
+        function toggleMenu(e) {
+            event.stopPropagation();
+            closeAllMenus(); // Close other menus before opening the new one
+
+            let menuContainer = event.target.closest(".menu-container");
+            let dropdown = menuContainer.querySelector(".menu-dropdown");
+            dropdown.classList.toggle("show");
+        }
+        function closeAllMenus() {
+            document.querySelectorAll(".menu-dropdown").forEach(menu => {
+                menu.classList.remove("show");
+            });
+        }
+        document.addEventListener("click", function (event) {
+            closeAllMenus();
+        });
     </script>
 </body>
 
