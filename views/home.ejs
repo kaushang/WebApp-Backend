@@ -54,15 +54,15 @@
                                     <%=element.content%>
                                 </p>
                                 <% const date=element.date; %>
-                                    <% const dateObj=new Date(date); %>
-                                        <% const options={ hour: "2-digit" , minute: "2-digit" , hour12: true }; %>
-                                            <% const formattedTime=dateObj.toLocaleTimeString("en-GB", options); %>
-                                                <% const shortDayName=dateObj.toLocaleDateString("en-US",
-                                                    {weekday: "short" }); %>
+                                <% const dateObj=new Date(date); %>
+                                <% const options={ hour: "2-digit" , minute: "2-digit" }; %>
+                                <% const formattedTime=dateObj.toLocaleTimeString("en-US", options); %>
+                                <% const shortDayName=dateObj.toLocaleDateString("en-US",
+                                {weekday: "short" }); %>
 
-                                                    <p class="time" style="padding: 0px 10px 0px 0px; ">
-                                                        <%= shortDayName %>, <%=formattedTime%>
-                                                    </p>
+                                <p class="time" style="padding: 0px 10px 0px 0px; ">
+                                    <%= shortDayName %>, <%=formattedTime%>
+                                </p>
 
 
                             </div>
