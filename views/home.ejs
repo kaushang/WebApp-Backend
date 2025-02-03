@@ -55,7 +55,7 @@
                                 </p>
                                 <% const date=element.date; %>
                                 <% const dateObj=new Date(date); %>
-                                <% const options={ hour: "2-digit" , minute: "2-digit" }; %>
+                                <% const options={ hour: "2-digit" , minute: "2-digit", hour12: true, timeZone: "Asia/Kolkata"}; %>
                                 <% const formattedTime=dateObj.toLocaleTimeString("en-US", options); %>
                                 <% const shortDayName=dateObj.toLocaleDateString("en-US",
                                 {weekday: "short" }); %>
@@ -104,8 +104,6 @@
         logoutBtn.addEventListener("click", (event) => {
             document.location.replace('/logout');
         });
-
-
 
         function toggleMenu(e) {
             event.stopPropagation();
