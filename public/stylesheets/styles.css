@@ -149,23 +149,13 @@ section {
     justify-content: space-between;
 }
 .nav-items {
-    background-color: rgba(200, 0, 0, 0.9);
-    border-radius: 6px;
-    font-size: medium;
-    text-decoration: none;
     color: white;
     display: flex;
     align-items: center;
-    padding: 15px 10px 15px 10px;
-    margin: 20px 20px 20px 10px;
+    margin: auto 20px;
 }
 .account {
-    margin: 20px 10px 20px 20px;
     background-color: #4f6483;
-}
-.user {
-    align-items: start;
-    background-color: rgba(255, 255, 255, 0);
 }
 .name {
     font-size: large;
@@ -285,7 +275,7 @@ h2, h3 {
         flex-direction: row;
         align-items: flex-end;
     }
-    .nav-items, .user {
+    .nav-items{
         font-size: small;
         padding: 8px 12px;
         margin: 5px;
@@ -296,10 +286,6 @@ h2, h3 {
 }
 
 @media (max-width: 480px) {
-    .user {
-        width: fit-content;
-        font-size: large;
-    }
     .main-cont, .nav-bar {
         width: 90%;
     }
@@ -334,7 +320,17 @@ h2, h3 {
     color: gray;
     font-size: 14px;
 }
-.menu-container {
+.ham-dropdown {
+    margin-right: -20px;
+    margin-top: 40px;
+}
+.user {
+    font-size: medium;
+    background-color: rgba(79, 100, 131, 0.4);
+    border-radius: 4px;
+    padding: 10px 10px 10px 10px;
+}
+.menu-container, .ham {
     position: relative;
     display: flex;
     flex-direction: row;
@@ -342,18 +338,21 @@ h2, h3 {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 8px;
-
 }
-.user-name {
+.user-name, .ham{
     margin: 0px;
 }
-.menu-button {
+.menu-button, .hamburger-button {
     color: white;
     font-size: 22px;
     cursor: pointer;
     border: none;
     background: none;
     background-color: #0f1319;
+}
+.hamburger-button {
+    padding: 0px;
+    background-color:#242d34;
 }
 .menu-dropdown {
     display: none;
@@ -365,17 +364,26 @@ h2, h3 {
     min-width: 120px;
     padding: 5px 0;
 }
-.menu-dropdown a {
+.menu-dropdown a, .go-back {
     display: block;
     padding: 10px;
     text-decoration: none;
     color: white;
     cursor: pointer;
     font-size: 14px;
+    margin: 0px 10px 0px 10px;
+    border-radius: 4px;
+}
+.go-back {
+    margin: 0px;
+    background-color: rgba(79, 100, 131, 0.4);
 }
 .menu-dropdown a:hover {
     background: #1c2329;
 }
 .show {
     display: block;
+}
+#home-logout:hover {
+    background-color: rgba(200, 0, 0, 0.9);
 }
