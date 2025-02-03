@@ -14,9 +14,14 @@
         <div class="nav-items user">
             <%=user.name%>
         </div>
-        <div class="nav-links">
-            <a class="nav-items account" href="/home">Go back</a>
-            <a id="home-logout" class="nav-items" href="#">Log out</a>
+        <div class="nav-items">
+            <div class="menu-container ham">
+                <button class="hamburger-button" onclick="toggleMenu()">☰</button>
+                <div class="menu-dropdown ham-dropdown" id="menu">
+                    <a href="/home">Go back</a>
+                    <a id="home-logout" href="#">Log out</a>
+                </div>
+            </div>
         </div>
     </nav>
 
@@ -383,6 +388,24 @@
             alertBox4.style.display = "none";
             document.location.replace('/account');
         });
+
+        function toggleMenu(e) {
+            event.stopPropagation();
+            closeAllMenus(); // Close other menus before opening the new one
+
+            let menuContainer = event.target.closest(".menu-container");
+            let dropdown = menuContainer.querySelector(".menu-dropdown");
+            dropdown.classList.toggle("show");
+        }
+        function closeAllMenus() {
+            document.querySelectorAll(".menu-dropdown").forEach(menu => {
+                menu.classList.remove("show");
+            });
+        }
+        document.addEventListener("click", function (event) {
+            closeAllMenus();
+        });
+
     </script>
 </body>
 
