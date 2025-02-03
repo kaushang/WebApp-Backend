@@ -176,7 +176,7 @@ section {
 }
 .content {
     color: rgba(255, 255, 255, 0.9);
-    margin: 0px 0px 16px 0px;
+    margin: 0px 0px 12px 0px;
     background-color: #0f1319;
 }
 .settings {
@@ -188,14 +188,6 @@ section {
     font-weight: 600;
     text-decoration: none;
     padding: 16px;
-}
-.user-name {
-    margin: 0px 0px 10px 0px;
-}
-.links {
-    background-color: #0f1319;
-    text-decoration: none;
-    color: rgb(170, 170, 170);
 }
 .edit-nav-bar {
     justify-content: space-between;
@@ -334,4 +326,56 @@ h2, h3 {
         width: 90%;
         padding: 15px;
     }
+}
+.time {
+    background-color: #0f1319;
+    display: flex;
+    flex-direction: row;
+    color: gray;
+    font-size: 14px;
+}
+.menu-container {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    background-color: #0f1319;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+
+}
+.user-name {
+    margin: 0px;
+}
+.menu-button {
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    background-color: #0f1319;
+}
+.menu-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    background: #242d34;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+    border-radius: 5px;
+    min-width: 120px;
+    padding: 5px 0;
+}
+.menu-dropdown a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+}
+.menu-dropdown a:hover {
+    background: #1c2329;
+}
+.show {
+    display: block;
 }
