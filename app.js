@@ -143,7 +143,7 @@ app.get('/delete/:id', isLoggedIn, async (req, res) => {
         const post = await postModel.findById(req.params.id);
         await postModel.findByIdAndDelete(req.params.id);
         await userModel.updateOne(
-            { _id: post.user }, // Find the user who owns the post
+            { _id: post.user },
             { $pull: { posts: req.params.id } } // Remove the post ID from the array
         );
         res.redirect("/home");
