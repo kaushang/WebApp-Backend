@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,10 +9,11 @@
     </title>
     <link rel="stylesheet" href="stylesheets/styles.css">
 </head>
+
 <body>
     <nav class="nav-bar">
         <div class="nav-items user">
-            username
+            champak2003
         </div>
         <div class="nav-items">
             <div class="menu-container ham">
@@ -23,6 +25,52 @@
             </div>
         </div>
     </nav>
+
+
+    <section>
+        <div class="main-cont">
+            <button class="nav-items user submit-form">
+                Create post
+            </button>
+
+            <div class="posts">
+                <%if(posts.length==0) {%>
+                    <p class="sub-heading" style="color: gray;">No posts yet.</p>
+                    <%} else { %>
+                        <%posts.forEach(function(element) { %>
+                            <div class="post">
+
+                                <div class="menu-container">
+                                    <h5 class="content user-name">@<%=element.user.username%>
+                                    </h5>
+                                    <button class="menu-button" onclick="toggleMenu(event)">⋮</button>
+                                    <div class="menu-dropdown" id="menu">
+                                        <a href="/edit/<%=element._id%>">Edit</a>
+                                        <a href="/delete/<%=element._id%>">Delete</a>
+                                    </div>
+                                </div>
+
+                                <p class="content">
+                                    <%=element.content%>
+                                </p>
+                                <% const date=element.date; %>
+                                <% const dateObj=new Date(date); %>
+                                <% const options={ hour: "2-digit" , minute: "2-digit", hour12: true, timeZone: "Asia/Kolkata"}; %>
+                                <% const formattedTime=dateObj.toLocaleTimeString("en-US", options); %>
+                                <% const shortDayName=dateObj.toLocaleDateString("en-US",
+                                {weekday: "short" }); %>
+
+                                <p class="time" style="padding: 0px 10px 0px 0px; ">
+                                    <%= shortDayName %>, <%=formattedTime%>
+                                </p>
+
+
+                            </div>
+                            <%})%>
+                                <%}%>
+            </div>
+        </div>
+    </section>
 
     <div id="logout" class="modal">
         <div class="modal-content alert1">
@@ -77,4 +125,5 @@
         });
     </script>
 </body>
+
 </html>

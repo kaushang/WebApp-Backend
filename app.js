@@ -33,8 +33,13 @@ app.get('/', isLoggedIn, (req, res) => {
         res.render('index');
     }
 });
-app.get('/home', (req, res) => {
-    res.render('home');
+app.get('/home', async (req, res) => {
+    const posts = await postModel.find()
+        .populate('user', 'username') // Fetch usernames
+        .sort({ createdAt: -1 }); // Newest first
+
+    res.render('home', { posts }); // Pass posts to the template
+    // res.render('home');
 })
 app.post('/create', async (req, res) => {
     const { email, username, name, password } = req.body;
