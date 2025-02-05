@@ -97,14 +97,6 @@ app.get('/home', isLoggedIn, async (req, res) => {
     if (req.user.email) {
         const user = await userModel.findOne({ email: req.user.email }).populate('posts');
         const post = await postModel.find({ user: user._id });
-
-        // const dateObj = new Date(date);
-        // const options = { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true };
-        // const formattedTime = dateObj.toLocaleTimeString("en-US", options);
-
-
-        // const hours = dateObj.getHours();
-        // const minutes = dateObj.getMinutes();
         res.render('home', { user, post });
     } else {
         res.redirect('/login');
@@ -150,7 +142,7 @@ app.get('/delete/:id', isLoggedIn, async (req, res) => {
         const post = await postModel.findById(req.params.id);
         await postModel.findByIdAndDelete(req.params.id);
         await userModel.updateOne(
-            { _id: post.user }, // Find the user who owns the post
+            { _id: post.user },
             { $pull: { posts: req.params.id } } // Remove the post ID from the array
         );
         res.redirect("/home");
