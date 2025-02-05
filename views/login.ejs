@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In</title>
+    <link rel="stylesheet" href="/stylesheets/styles.css">
+</head>
+
+<body class="auth">
+    <div class="form-section">
+        <form action="/login" method="POST">
+            <h2 class="heading">Log in</h2>
+            <input required placeholder="Email" type="text" name="email">
+            <input required placeholder="Passsword" type="password" name="password">
+            <span id="errorMessage" style="background-color: #0f1319; color: red; font-size: smaller; display: block;"></span>
+            <input onclick="check()" class="submit-form" id="submit" type="submit" value="Log In">
+
+            <p class="login">Don't have an account? <a class="login" href="/">Create one</a></p>
+        </form>
+    </div>
+    <script>
+
+        const errorMessage = document.getElementById("errorMessage");
+        const submit = document.getElementById("submit");
+
+        async function check() {
+            const url = "/login";
+            const data = {
+                email: document.querySelector('input[name="email"]').value,
+                password: document.querySelector('input[name="password"]').value,
+            };
+            if (data.email === "" || data.password === "") {
+                submit.setAttribute("disabled");
+            }
+            event.preventDefault();
+
+            const response = await fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
+            const result = await response.json();
+            if (response.ok) {
+                document.location.replace('/home');
+            } else {
+                errorMessage.textContent = result.message;
+            }
+        }
+    </script>
+</body>
+
+</html>
