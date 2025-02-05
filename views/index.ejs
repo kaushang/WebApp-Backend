@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 
@@ -61,67 +60,3 @@
 </body>
 
 </html>
-=======
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Account</title>
-    <link rel="stylesheet" href="stylesheets/styles.css">
-</head>
-
-<body class="auth">
-    <div class="form-section">
-        <form action="/create" method="POST">
-            <h2 class="heading">Create an account</h2>
-
-            <input required placeholder="Email" type="text" name="email">
-            <input required placeholder="Username" type="text" name="username">
-            <input required placeholder="Name" type="text" name="name">
-            <input required placeholder="Passsword" type="password" name="password">
-
-            <span id="errorMessage"
-                style="background-color: #0f1319; color: rgba(255, 0, 0, 0.9); font-size: smaller; display: block;"></span>
-
-            <input onclick="createAcc()" class="submit-form" id="submit" type="submit" value="Create Account">
-            <p class="login">Already have an account? <a class="login" href="/login">Log in</a></p>
-        </form>
-    </div>
-    <script>
-
-        const submit = document.getElementById('submit');
-        
-        async function createAcc() {
-            submit.removeAttribute("disabled");
-            const url = "/create";
-            const data = {
-                email: document.querySelector('input[name="email"]').value,
-                username: document.querySelector('input[name="username"]').value,
-                name: document.querySelector('input[name="name"]').value,
-                password: document.querySelector('input[name="password"]').value
-            };
-            if (data.email === "" || data.username === "" || data.name === "" || data.password === "") {
-                submit.setAttribute("disabled");
-            }
-            event.preventDefault();
-            const errorMessage = document.getElementById("errorMessage");
-            errorMessage.textContent = "";
-            const response = await fetch(url, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data)
-            });
-            const result = await response.json();
-            if (response.ok) {
-                document.location.replace('/home');
-            } else {
-                errorMessage.textContent = result.message;
-            }
-        }
-    </script>
-</body>
-
-</html>
->>>>>>> 83fa5d85edb70ac2fd9b912e96b66898c974a188
