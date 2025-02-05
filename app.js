@@ -33,6 +33,7 @@ app.get('/', isLoggedIn, (req, res) => {
 });
 
 app.post('/create', async (req, res) => {
+
     const { email, username, name, password } = req.body;
     const alreadyCreated = await userModel.findOne({ email });
     const usernameTaken = await userModel.findOne({ username });
@@ -142,7 +143,7 @@ app.get('/delete/:id', isLoggedIn, async (req, res) => {
         const post = await postModel.findById(req.params.id);
         await postModel.findByIdAndDelete(req.params.id);
         await userModel.updateOne(
-            { _id: post.user },
+            { _id: post.user }, // Find the user who owns the post
             { $pull: { posts: req.params.id } } // Remove the post ID from the array
         );
         res.redirect("/home");

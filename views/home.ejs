@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 
@@ -132,3 +133,139 @@
 </body>
 
 </html>
+=======
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        Home - <%= user.username%>
+    </title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+
+</head>
+
+<body>
+    <nav class="nav-bar">
+        <div class="nav-items user">
+            <%=user.name%>
+        </div>
+        <div class="nav-items">
+            <div class="menu-container ham">
+                <button class="hamburger-button" onclick="toggleMenu()">☰</button>
+                <div class="menu-dropdown ham-dropdown" id="menu">
+                    <a href="/account">Account</a>
+                    <a id="home-logout" href="#">Log out</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section>
+        <div class="main-cont">
+            <div class="create-post">
+                <form action="/post" method="POST">
+                    <h1 class="heading post-heading">Create a post</h1>
+                    <textarea required rows="4" class="post-content" placeholder="What's on your mind?"
+                        name="content"></textarea>
+                    <input class="submit-form post-submit" id="submit" type="submit" value="Create Post">
+                </form>
+            </div>
+            <div class="posts">
+                <%if(post.length==0) {%>
+                    <p class="sub-heading" style="color: gray;">No posts yet.</p>
+                    <%} else { %>
+                        <p class="sub-heading">Your posts</p>
+                        <%post.reverse().forEach(function(element) { %>
+                            <div class="post">
+
+                                <div class="menu-container">
+                                    <h5 class="content user-name">@<%=user.username%>
+                                    </h5>
+                                    <button class="menu-button" onclick="toggleMenu(event)">⋮</button>
+                                    <div class="menu-dropdown" id="menu">
+                                        <a href="/edit/<%=element._id%>">Edit</a>
+                                        <a href="/delete/<%=element._id%>">Delete</a>
+                                    </div>
+                                </div>
+
+                                <p class="content">
+                                    <%=element.content%>
+                                </p>
+                                <% const date=element.date; %>
+                                <% const dateObj=new Date(date); %>
+                                <% const options={ hour: "2-digit" , minute: "2-digit", hour12: true, timeZone: "Asia/Kolkata"}; %>
+                                <% const formattedTime=dateObj.toLocaleTimeString("en-US", options); %>
+                                <% const shortDayName=dateObj.toLocaleDateString("en-US",
+                                {weekday: "short" }); %>
+
+                                <p class="time" style="padding: 0px 10px 0px 0px; ">
+                                    <%= shortDayName %>, <%=formattedTime%>
+                                </p>
+
+
+                            </div>
+                            <%})%>
+                                <%}%>
+            </div>
+        </div>
+    </section>
+
+    <div id="logout" class="modal">
+        <div class="modal-content alert1">
+            <h3>Are you sure you want to log out?</h3>
+            <div class="btns">
+                <input id="cancelBtn" style="background-color: rgba(79, 100, 131, 0.2);" class="submit-form post-submit"
+                    type="submit" value="Cancel"></input>
+                <input id="logoutBtn" style="background-color: rgba(200, 0, 0, 0.9);" onclick=""
+                    class="submit-form post-submit" type="submit" value="Log out"></input>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const logout = document.getElementById("logout");
+        const logoutLink = document.getElementById("home-logout");
+        const cancelBtn = document.getElementById("cancelBtn");
+        const logoutBtn = document.getElementById("logoutBtn");
+
+        logoutLink.addEventListener("click", (event) => {
+            logout.style.display = "block";
+        });
+        cancelBtn.addEventListener("click", (event) => {
+            logout.style.display = "none";
+        });
+        window.addEventListener("click", (e) => {
+            if (e.target === logout) {
+                logout.style.display = "none";
+            }
+        });
+        logoutBtn.addEventListener("click", (event) => {
+            document.location.replace('/logout');
+        });
+
+
+
+        function toggleMenu(e) {
+            event.stopPropagation();
+            closeAllMenus(); // Close other menus before opening the new one
+
+            let menuContainer = event.target.closest(".menu-container");
+            let dropdown = menuContainer.querySelector(".menu-dropdown");
+            dropdown.classList.toggle("show");
+        }
+        function closeAllMenus() {
+            document.querySelectorAll(".menu-dropdown").forEach(menu => {
+                menu.classList.remove("show");
+            });
+        }
+        document.addEventListener("click", function (event) {
+            closeAllMenus();
+        });
+    </script>
+</body>
+
+</html>
+>>>>>>> 83fa5d85edb70ac2fd9b912e96b66898c974a188
