@@ -28,14 +28,13 @@ app.use(cookieParser());
 
 app.get('/', isLoggedIn, (req, res) => {
     if (req.user.email) {
-        res.redirect('/home');
+        res.redirect('/create');
     } else {
         res.render('index');
     }
 });
 
 app.post('/create', async (req, res) => {
-
     const { email, username, name, password } = req.body;
     const alreadyCreated = await userModel.findOne({ email });
     const usernameTaken = await userModel.findOne({ username });
@@ -64,7 +63,7 @@ app.post('/create', async (req, res) => {
 
 app.get('/login', isLoggedIn, (req, res) => {
     if (req.user.email) {
-        res.redirect('/home');
+        res.redirect('/create');
     } else {
         res.render('login');
     }
@@ -72,7 +71,7 @@ app.get('/login', isLoggedIn, (req, res) => {
 
 app.post('/login', isLoggedIn, async (req, res) => {
     if (req.user.email) {
-        res.redirect('/home');
+        res.redirect('/create');
     } else {
         const user = await userModel.findOne({ email: req.body.email });
         if (!user) {
@@ -96,11 +95,11 @@ app.get('/logout', (req, res) => {
     res.redirect('/login');
 });
 
-app.get('/home', isLoggedIn, async (req, res) => {
+app.get('/create', isLoggedIn, async (req, res) => {
     if (req.user.email) {
         const user = await userModel.findOne({ email: req.user.email }).populate('posts');
         const post = await postModel.find({ user: user._id });
-        res.render('home', { user, post });
+        res.render('create', { user, post });
     } else {
         res.redirect('/login');
     }
@@ -115,7 +114,7 @@ app.post('/post', isLoggedIn, async (req, res) => {
         });
         user.posts.push(post._id);
         await user.save();
-        res.redirect("/home");
+        res.redirect("/create");
     } else {
         res.redirect('/login');
     }
@@ -134,7 +133,7 @@ app.get('/edit/:id', isLoggedIn, async (req, res) => {
 app.post('/update/:id', isLoggedIn, async (req, res) => {
     if (req.user.email) {
         await postModel.findOneAndUpdate({ _id: req.params.id }, { content: req.body.content });
-        res.redirect("/home");
+        res.redirect("/create");
     } else {
         res.redirect('/login');
     }
@@ -148,7 +147,7 @@ app.get('/delete/:id', isLoggedIn, async (req, res) => {
             { _id: post.user },
             { $pull: { posts: req.params.id } } // Remove the post ID from the array
         );
-        res.redirect("/home");
+        res.redirect("/create");
     } else {
         res.render('login');
     }
