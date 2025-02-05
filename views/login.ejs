@@ -43,7 +43,7 @@
             });
             const result = await response.json();
             if (response.ok) {
-                document.location.replace('/home');
+                document.location.replace('/create');
             } else {
                 errorMessage.textContent = result.message;
             }
