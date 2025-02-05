@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        Home
+    </title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="nav-items user">
+            username
+        </div>
+        <div class="nav-items">
+            <div class="menu-container ham">
+                <button class="hamburger-button" onclick="toggleMenu()">☰</button>
+                <div class="menu-dropdown ham-dropdown" id="menu">
+                    <a href="/account">Account</a>
+                    <a id="home-logout" href="#">Log out</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div id="logout" class="modal">
+        <div class="modal-content alert1">
+            <h3>Are you sure you want to log out?</h3>
+            <div class="btns">
+                <input id="cancelBtn" style="background-color: rgba(79, 100, 131, 0.2);" class="submit-form post-submit"
+                    type="submit" value="Cancel"></input>
+                <input id="logoutBtn" style="background-color: rgba(200, 0, 0, 0.9);" onclick=""
+                    class="submit-form post-submit" type="submit" value="Log out"></input>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const logout = document.getElementById("logout");
+        const logoutLink = document.getElementById("home-logout");
+        const cancelBtn = document.getElementById("cancelBtn");
+        const logoutBtn = document.getElementById("logoutBtn");
+
+        logoutLink.addEventListener("click", (event) => {
+            logout.style.display = "block";
+        });
+        cancelBtn.addEventListener("click", (event) => {
+            logout.style.display = "none";
+        });
+        window.addEventListener("click", (e) => {
+            if (e.target === logout) {
+                logout.style.display = "none";
+            }
+        });
+        logoutBtn.addEventListener("click", (event) => {
+            document.location.replace('/logout');
+        });
+
+
+
+        function toggleMenu(e) {
+            event.stopPropagation();
+            closeAllMenus(); // Close other menus before opening the new one
+
+            let menuContainer = event.target.closest(".menu-container");
+            let dropdown = menuContainer.querySelector(".menu-dropdown");
+            dropdown.classList.toggle("show");
+        }
+        function closeAllMenus() {
+            document.querySelectorAll(".menu-dropdown").forEach(menu => {
+                menu.classList.remove("show");
+            });
+        }
+        document.addEventListener("click", function (event) {
+            closeAllMenus();
+        });
+    </script>
+</body>
+</html>

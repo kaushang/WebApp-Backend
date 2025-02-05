@@ -28,12 +28,14 @@ app.use(cookieParser());
 
 app.get('/', isLoggedIn, (req, res) => {
     if (req.user.email) {
-        res.redirect('/create');
+        res.redirect('/home');
     } else {
         res.render('index');
     }
 });
-
+app.get('/home', (req, res) => {
+    res.render('home');
+})
 app.post('/create', async (req, res) => {
     const { email, username, name, password } = req.body;
     const alreadyCreated = await userModel.findOne({ email });
