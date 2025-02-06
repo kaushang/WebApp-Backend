@@ -37,8 +37,7 @@ app.get('/home', isLoggedIn, async (req, res) => {
     if (req.user.email) {
         const user = await userModel.findOne({ email: req.user.email });
         const posts = await postModel.find()
-            .populate('user', 'username') // Fetch usernames
-            .sort({ createdAt: -1 }); // Newest first
+            .populate('user', 'username'); // Fetch usernames
         res.render('home', { posts, user });
     } else {
         res.render('login');
