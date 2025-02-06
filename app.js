@@ -69,7 +69,7 @@ app.post('/create', async (req, res) => {
 
 app.get('/login', isLoggedIn, (req, res) => {
     if (req.user.email) {
-        res.redirect('/create');
+        res.redirect('/home');
     } else {
         res.render('login');
     }
@@ -77,7 +77,7 @@ app.get('/login', isLoggedIn, (req, res) => {
 
 app.post('/login', isLoggedIn, async (req, res) => {
     if (req.user.email) {
-        res.redirect('/create');
+        res.redirect('/home');
     } else {
         const user = await userModel.findOne({ email: req.body.email });
         if (!user) {
