@@ -33,12 +33,16 @@ app.get('/', isLoggedIn, (req, res) => {
         res.render('index');
     }
 });
-app.get('/home', async (req, res) => {
-    const posts = await postModel.find()
-        .populate('user', 'username') // Fetch usernames
-        .sort({ createdAt: -1 }); // Newest first
-
-    res.render('home', { posts });
+app.get('/home', isLoggedIn, async (req, res) => {
+    if (req.user.email) {
+        const user = await userModel.findOne({ email: req.user.email });
+        const posts = await postModel.find()
+            .populate('user', 'username') // Fetch usernames
+            .sort({ createdAt: -1 }); // Newest first
+        res.render('home', { posts, user });
+    } else {
+        res.render('login');
+    }
 })
 app.post('/create', async (req, res) => {
     const { email, username, name, password } = req.body;

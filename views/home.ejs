@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        Home
+        Home - <%= user.username %>
     </title>
     <link rel="stylesheet" href="stylesheets/styles.css">
 </head>
@@ -13,7 +13,7 @@
 <body>
     <nav class="nav-bar">
         <div class="nav-items user">
-            champak2003
+            <%= user.name %>
         </div>
         <div class="nav-items">
             <a class="user go-back" href="/create">Create post</a>
@@ -95,8 +95,6 @@
         logoutBtn.addEventListener("click", (event) => {
             document.location.replace('/logout');
         });
-
-
 
         function toggleMenu(e) {
             event.stopPropagation();
