@@ -38,8 +38,7 @@ app.get('/home', async (req, res) => {
         .populate('user', 'username') // Fetch usernames
         .sort({ createdAt: -1 }); // Newest first
 
-    res.render('home', { posts }); // Pass posts to the template
-    // res.render('home');
+    res.render('home', { posts });
 })
 app.post('/create', async (req, res) => {
     const { email, username, name, password } = req.body;

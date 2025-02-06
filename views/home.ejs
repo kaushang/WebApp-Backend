@@ -16,11 +16,12 @@
             champak2003
         </div>
         <div class="nav-items">
+            <a class="user go-back" href="/create">Create post</a>
             <div class="menu-container ham">
                 <button class="hamburger-button" onclick="toggleMenu()">☰</button>
                 <div class="menu-dropdown ham-dropdown" id="menu">
                     <a href="/account">Account</a>
-                    <a id="home-logout" href="#">Log out</a>
+                    <a id="home-logout" href="">Log out</a>
                 </div>
             </div>
         </div>
@@ -29,10 +30,6 @@
 
     <section>
         <div class="main-cont">
-            <button class="nav-items user submit-form">
-                Create post
-            </button>
-
             <div class="posts">
                 <%if(posts.length==0) {%>
                     <p class="sub-heading" style="color: gray;">No posts yet.</p>
@@ -43,11 +40,6 @@
                                 <div class="menu-container">
                                     <h5 class="content user-name">@<%=element.user.username%>
                                     </h5>
-                                    <button class="menu-button" onclick="toggleMenu(event)">⋮</button>
-                                    <div class="menu-dropdown" id="menu">
-                                        <a href="/edit/<%=element._id%>">Edit</a>
-                                        <a href="/delete/<%=element._id%>">Delete</a>
-                                    </div>
                                 </div>
 
                                 <p class="content">
@@ -63,7 +55,6 @@
                                 <p class="time" style="padding: 0px 10px 0px 0px; ">
                                     <%= shortDayName %>, <%=formattedTime%>
                                 </p>
-
 
                             </div>
                             <%})%>

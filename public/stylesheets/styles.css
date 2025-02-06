@@ -66,7 +66,7 @@ input {
     background-color: rgb(0, 100, 209); 
     color: white;
     border: none;
-        transition: 0.1s;
+    transition: 0.1s;
     margin-top: 10px;
 }
 .submit-form:hover {
@@ -312,6 +312,9 @@ h2, h3 {
         width: 90%;
         padding: 15px;
     }
+    .hamburger-button {
+        margin-left: 0px;
+    }
 }
 .time {
     background-color: #0f1319;
@@ -319,10 +322,6 @@ h2, h3 {
     flex-direction: row;
     color: gray;
     font-size: 14px;
-}
-.ham-dropdown {
-    margin-right: -20px;
-    margin-top: 40px;
 }
 .user {
     font-size: medium;
@@ -339,8 +338,12 @@ h2, h3 {
     align-items: center;
     margin-bottom: 8px;
 }
-.user-name, .ham{
+.user-name {
+    background-color: #0f1319;
     margin: 0px;
+} 
+.ham{
+    background-color:#242d34;
 }
 .menu-button, .hamburger-button {
     color: white;
@@ -351,6 +354,8 @@ h2, h3 {
     background-color: #0f1319;
 }
 .hamburger-button {
+    margin-top: 8px;
+    margin-left: 14px;
     padding: 0px;
     background-color:#242d34;
 }
@@ -363,6 +368,11 @@ h2, h3 {
     border-radius: 5px;
     min-width: 120px;
     padding: 5px 0;
+    flex-direction: column;
+    margin-top: 60px;
+    width: 180px;
+    height: 100px;
+    justify-content: space-around;
 }
 .menu-dropdown a, .go-back {
     display: block;
@@ -374,16 +384,26 @@ h2, h3 {
     margin: 0px 10px 0px 10px;
     border-radius: 4px;
 }
-.go-back {
-    margin: 0px;
-    background-color: rgba(79, 100, 131, 0.4);
-}
-.menu-dropdown a:hover {
+.menu-dropdown a:hover, .go-back:hover {
     background: #1c2329;
 }
 .show {
-    display: block;
+    display: flex;
 }
 #home-logout:hover {
     background-color: rgba(200, 0, 0, 0.9);
+}
+
+@media (max-width: 480px) {
+    .menu-dropdown {
+        text-align: start;
+        width: 140px;
+        height: 100px;
+    }
+    .menu-dropdown a {
+        justify-content: start;
+    }   
+    .hamburger-button {
+        margin-left: 4px;
+    }
 }
