@@ -139,7 +139,7 @@ section {
 .profile-heading, .sub-heading {
     width: fit-content;
 }
-.nav-bar, .edit-nav-bar {
+.nav-bar {
     margin: auto;
     width: 38%;
     max-width: 600px;
@@ -150,9 +150,12 @@ section {
 }
 .nav-items {
     color: white;
+    margin: auto 20px;
+}
+.options {
     display: flex;
     align-items: center;
-    margin: auto 20px;
+    justify-content: space-between;
 }
 .account {
     background-color: #4f6483;
@@ -179,10 +182,6 @@ section {
     text-decoration: none;
     padding: 16px;
 }
-.edit-nav-bar {
-    justify-content: space-between;
-}
-
 /* Profile styling */
 .modal {
     display: none;
@@ -329,22 +328,24 @@ h2, h3 {
     border-radius: 4px;
     padding: 10px 10px 10px 10px;
 }
-.menu-container, .ham {
+.menu-container {
     position: relative;
     display: flex;
     flex-direction: row;
-    background-color: #0f1319;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px;
-}
-.user-name {
+    height: fit-content;
     background-color: #0f1319;
-    margin: 0px;
-} 
-.ham{
-    background-color:#242d34;
 }
+
+.user-name {
+    color: gray;
+    font-size: medium;
+    font-weight: normal;
+    background-color: #0f1319;
+    margin-bottom: 8px;
+} 
+
 .menu-button, .hamburger-button {
     color: white;
     font-size: 22px;
@@ -353,10 +354,12 @@ h2, h3 {
     background: none;
     background-color: #0f1319;
 }
+.menu-button {
+    background-color: #0f1319;
+
+}
 .hamburger-button {
-    margin-top: 8px;
-    margin-left: 14px;
-    padding: 0px;
+    margin-left: 10px;
     background-color:#242d34;
 }
 .menu-dropdown {
@@ -375,14 +378,26 @@ h2, h3 {
     justify-content: space-around;
 }
 .menu-dropdown a, .go-back {
+    color: white;
     display: block;
     padding: 10px;
     text-decoration: none;
-    color: white;
     cursor: pointer;
-    font-size: 14px;
+    font-size: medium;
     margin: 0px 10px 0px 10px;
     border-radius: 4px;
+}
+.fa-pen-to-square {
+    background-color: #ffffff00;
+}
+.fa-ellipsis-vertical {
+    padding: 0px 8px 6px 8px;
+    align-self: flex-start;
+    font-size: large;
+    background-color: #ffffff00;
+}
+.hamburger-button {
+    background-color: #242d34;
 }
 .menu-dropdown a:hover, .go-back:hover {
     background: #1c2329;

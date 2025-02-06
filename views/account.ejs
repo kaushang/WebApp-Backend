@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account - <%=user.username%>
     </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="/stylesheets/styles.css">
 </head>
 
@@ -14,12 +15,14 @@
         <div class="nav-items user">
             <%=user.name%>
         </div>
-        <div class="nav-items">
-            <a class="user go-back" href="/home">Go back</a>
-            <div class="menu-container ham">
-                <button class="hamburger-button" onclick="toggleMenu()">☰</button>
+        <div class="nav-items options">
+            <a class="user go-back" href="/home">Home</a>
+            <div class="menu-container">
+                <div>
+                    <i class="fa-solid fa-bars hamburger-button" onclick="toggleMenu()"></i>
+                </div>
                 <div class="menu-dropdown ham-dropdown" id="menu">
-                    <a class="" href="/home">Home </a>
+                    <a href="/account">Account</a>
                     <a id="home-logout" href="#">Log out</a>
                 </div>
             </div>

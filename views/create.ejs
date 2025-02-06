@@ -7,6 +7,7 @@
     <title>
         Create - <%= user.username%>
     </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="stylesheets/styles.css">
 </head>
 
@@ -15,10 +16,12 @@
         <div class="nav-items user">
             <%=user.name%>
         </div>
-        <div class="nav-items">
+        <div class="nav-items options">
             <a class="user go-back" href="/home">Home</a>
-            <div class="menu-container ham">
-                <button class="hamburger-button" onclick="toggleMenu()">☰</button>
+            <div class="menu-container">
+                <div>
+                    <i class="fa-solid fa-bars hamburger-button" onclick="toggleMenu()"></i>
+                </div>
                 <div class="menu-dropdown ham-dropdown" id="menu">
                     <a href="/account">Account</a>
                     <a id="home-logout" href="#">Log out</a>
@@ -46,9 +49,8 @@
                             <div class="post">
 
                                 <div class="menu-container">
-                                    <h5 class="content user-name">@<%=user.username%>
-                                    </h5>
-                                    <button class="menu-button" onclick="toggleMenu(event)">⋮</button>
+                                    <h5 class="user-name">@<%=user.username%></h5>
+                                    <i onclick="toggleMenu(event)" class="fa-solid fa-ellipsis-vertical menu-button"></i>
                                     <div class="menu-dropdown" id="menu">
                                         <a href="/edit/<%=element._id%>">Edit</a>
                                         <a href="/delete/<%=element._id%>">Delete</a>
