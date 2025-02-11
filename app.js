@@ -8,9 +8,8 @@ const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const postModel = require('./models/postModel');
 
-// test
-
 const mongoose = require('mongoose');
+const { type } = require('os');
 require('dotenv').config();
 
 mongoose.connect(process.env.MONGO_URI, {
@@ -249,6 +248,24 @@ app.post("/updatename", isLoggedIn, async (req, res) => {
         res.status(200).json({ message: "Name updated" });
     } else {
         res.redirect('/login');
+    }
+});
+
+app.post('/like/:postId', async (req, res) => {
+    const postId = req.params.postId; // String
+    const userId = req.body.userId; // String
+
+    const post = await postModel.findOne({_id: postId});
+    const likedIndex = post.likes.indexOf(userId);
+
+    if (likedIndex === -1) {
+        post.likes.push(userId); // Add like
+        await post.save();
+        res.status(200).json({ likes: post.likes.length, message: "liked"}); // Return updated like count
+    } else {
+        post.likes.splice(likedIndex, 1); // Remove like
+        await post.save();
+        res.status(200).json({ likes: post.likes.length,message: "unliked" }); // Return updated like count
     }
 });
 

@@ -39,21 +39,31 @@
                     <%} else { %>
                         <%posts.reverse().forEach(function(element) { %>
                             <div class="post">
-                                <h5 class="content user-name">@<%=element.user.username%></h5>
+                                <h5 class="content user-name">@<%=element.user.username%>
+                                </h5>
 
                                 <p class="content">
                                     <%=element.content%>
                                 </p>
                                 <% const date=element.date; %>
-                                <% const dateObj=new Date(date); %>
-                                <% const options={ hour: "2-digit" , minute: "2-digit", hour12: true, timeZone: "Asia/Kolkata"}; %>
-                                <% const formattedTime=dateObj.toLocaleTimeString("en-US", options); %>
-                                <% const shortDayName=dateObj.toLocaleDateString("en-US",
-                                {weekday: "short" }); %>
+                                    <% const dateObj=new Date(date); %>
+                                        <% const options={ hour: "2-digit" , minute: "2-digit" , hour12: true,
+                                            timeZone: "Asia/Kolkata" }; %>
+                                            <% const formattedTime=dateObj.toLocaleTimeString("en-US", options); %>
+                                                <% const shortDayName=dateObj.toLocaleDateString("en-US",
+                                                    {weekday: "short" }); %>
 
-                                <p class="time" style="padding: 0px 10px 0px 0px; ">
-                                    <%= shortDayName %>, <%=formattedTime%>
-                                </p>
+                                                    <div class="likeNtime" style="padding: 0px 10px 0px 0px;">
+                                                        <a onclick="likePost('<%= element._id %>', '<%= user._id %>')"
+                                                            href="#" class="likeNheart">
+                                                            <i id="heart-<%= element._id %>"
+                                                                class="fa-solid fa-heart"></i>
+                                                            <p id="likes-<%= element._id %>" class="like-count"><%=element.likes.length%></p>
+                                                        </a>
+                                                        <p class="dateNtime">
+                                                            <%= shortDayName %>, <%=formattedTime%>
+                                                        </p>
+                                                    </div>
 
                             </div>
                             <%})%>
@@ -111,6 +121,28 @@
         document.addEventListener("click", function (event) {
             closeAllMenus();
         });
+
+        // Like Unlike functionality
+        async function likePost(postId, userId) {
+            event.preventDefault();
+            const response = await fetch(`/like/${postId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId })
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                if (data.message === "liked") {
+                    document.getElementById(`likes-${postId}`).textContent = data.likes;
+                    document.getElementById(`heart-${postId}`).style.color = "red";
+                } else {
+                    document.getElementById(`likes-${postId}`).textContent = data.likes;
+                    document.getElementById(`heart-${postId}`).style.color = "white";
+                }
+            }
+        }
+
     </script>
 </body>
 
