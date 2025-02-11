@@ -450,6 +450,10 @@ h2, h3 {
     border-radius: 22px;
     flex-direction: row;
     margin-right: 12px;
+    -webkit-tap-highlight-color: transparent; /* Removes tap highlight */
+}
+.likeNheart:active {
+    background-color: transparent;
 }
 .red {
     color: red;
