@@ -49,8 +49,10 @@
                             <div class="post">
 
                                 <div class="menu-container">
-                                    <h5 class="user-name">@<%=user.username%></h5>
-                                    <i onclick="toggleMenu(event)" class="fa-solid fa-ellipsis-vertical menu-button"></i>
+                                    <h5 class="user-name">@<%=user.username%>
+                                    </h5>
+                                    <i onclick="toggleMenu(event)"
+                                        class="fa-solid fa-ellipsis-vertical menu-button"></i>
                                     <div class="menu-dropdown" id="menu">
                                         <a href="/edit/<%=element._id%>">Edit</a>
                                         <a href="/delete/<%=element._id%>">Delete</a>
@@ -61,16 +63,36 @@
                                     <%=element.content%>
                                 </p>
                                 <% const date=element.date; %>
-                                <% const dateObj=new Date(date); %>
-                                <% const options={ hour: "2-digit" , minute: "2-digit", hour12: true, timeZone: "Asia/Kolkata"}; %>
-                                <% const formattedTime=dateObj.toLocaleTimeString("en-US", options); %>
-                                <% const shortDayName=dateObj.toLocaleDateString("en-US",
-                                {weekday: "short" }); %>
+                                    <% const dateObj=new Date(date); %>
+                                        <% const options={ hour: "2-digit" , minute: "2-digit" , hour12: true,
+                                            timeZone: "Asia/Kolkata" }; %>
+                                            <% const formattedTime=dateObj.toLocaleTimeString("en-US", options); %>
+                                                <% const shortDayName=dateObj.toLocaleDateString("en-US",
+                                                    {weekday: "short" }); %>
 
-                                <p class="time" style="padding: 0px 10px 0px 0px; ">
+                                                    <!-- <p class="time" style="padding: 0px 10px 0px 0px; ">
                                     <%= shortDayName %>, <%=formattedTime%>
-                                </p>
+                                </p> -->
 
+                                                    <div class="likeNtime" style="padding: 0px 10px 0px 0px;">
+                                                        <a onclick="likePost('<%= element._id %>', '<%= user._id %>')"
+                                                            href="#" class="likeNheart">
+                                                            <% if(element.likes.includes(user._id)) { %>
+                                                                <i id="heart-<%= element._id %>"
+                                                                    class="fa-solid fa-heart red"></i>
+                                                                <% } else { %>
+                                                                    <i id="heart-<%= element._id %>"
+                                                                        class="fa-solid fa-heart"></i>
+                                                                    <% } %>
+                                                                        <p id="likes-<%= element._id %>"
+                                                                            class="like-count">
+                                                                            <%=element.likes.length%>
+                                                                        </p>
+                                                        </a>
+                                                        <p class="dateNtime">
+                                                            <%= shortDayName %>, <%=formattedTime%>
+                                                        </p>
+                                                    </div>
 
                             </div>
                             <%})%>
@@ -113,7 +135,6 @@
         });
 
 
-
         function toggleMenu(e) {
             event.stopPropagation();
             closeAllMenus(); // Close other menus before opening the new one
@@ -130,6 +151,31 @@
         document.addEventListener("click", function (event) {
             closeAllMenus();
         });
+
+
+        // Like Unlike functionality
+        async function likePost(postId, userId) {
+            event.preventDefault();
+            const response = await fetch(`/like/${postId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId })
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                if (data.message === "liked") {
+                    console.log(document.getElementById(`heart-${postId}`));
+                    document.getElementById(`likes-${postId}`).textContent = data.likes;
+                    document.getElementById(`heart-${postId}`).classList.add("red");
+                    console.log(document.getElementById(`heart-${postId}`));
+
+                } else {
+                    document.getElementById(`likes-${postId}`).textContent = data.likes;
+                    document.getElementById(`heart-${postId}`).classList.remove("red");
+                }
+            }
+        }
     </script>
 </body>
 

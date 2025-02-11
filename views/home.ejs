@@ -56,8 +56,11 @@
                                                     <div class="likeNtime" style="padding: 0px 10px 0px 0px;">
                                                         <a onclick="likePost('<%= element._id %>', '<%= user._id %>')"
                                                             href="#" class="likeNheart">
-                                                            <i id="heart-<%= element._id %>"
-                                                                class="fa-solid fa-heart"></i>
+                                                            <% if(element.likes.includes(user._id)) { %>
+                                                                <i id="heart-<%= element._id %>" class="fa-solid fa-heart red"></i>
+                                                            <% } else { %>
+                                                                <i id="heart-<%= element._id %>" class="fa-solid fa-heart"></i>
+                                                            <% } %>
                                                             <p id="likes-<%= element._id %>" class="like-count"><%=element.likes.length%></p>
                                                         </a>
                                                         <p class="dateNtime">
