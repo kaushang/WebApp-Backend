@@ -451,3 +451,6 @@ h2, h3 {
     flex-direction: row;
     margin-right: 12px;
 }
+.red {
+    color: red;
+}

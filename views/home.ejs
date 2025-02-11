@@ -134,11 +134,14 @@
             const data = await response.json();
             if (response.ok) {
                 if (data.message === "liked") {
+                    console.log(document.getElementById(`heart-${postId}`));
                     document.getElementById(`likes-${postId}`).textContent = data.likes;
-                    document.getElementById(`heart-${postId}`).style.color = "red";
+                    document.getElementById(`heart-${postId}`).classList.add("red");
+                    console.log(document.getElementById(`heart-${postId}`));
+                    
                 } else {
                     document.getElementById(`likes-${postId}`).textContent = data.likes;
-                    document.getElementById(`heart-${postId}`).style.color = "white";
+                    document.getElementById(`heart-${postId}`).classList.remove("red");
                 }
             }
         }
