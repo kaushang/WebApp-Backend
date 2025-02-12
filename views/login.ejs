@@ -14,7 +14,8 @@
             <h2 class="heading">Log in</h2>
             <input required placeholder="Email" type="text" name="email">
             <input required placeholder="Passsword" type="password" name="password">
-            <span id="errorMessage" style="background-color: #0f1319; color: red; font-size: smaller; display: block;"></span>
+            <span id="errorMessage"
+                style="background-color: #0f1319; color: red; font-size: smaller; display: block;"></span>
             <input onclick="check()" class="submit-form" id="submit" type="submit" value="Log In">
 
             <p class="login">Don't have an account? <a class="login" href="/">Create one</a></p>
@@ -26,6 +27,7 @@
         const submit = document.getElementById("submit");
 
         async function check() {
+
             const url = "/login";
             const data = {
                 email: document.querySelector('input[name="email"]').value,
