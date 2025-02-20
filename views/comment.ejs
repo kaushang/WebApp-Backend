@@ -50,7 +50,7 @@
 
                 <div class="likeNtime" style="padding: 0px 10px 0px 0px;">
 
-                    <a href="#" class="likeNheart">
+                    <a onclick="likePost('<%= post._id %>', '<%= user._id %>')" href="#" class="likeNheart">
                         <% if(post.likes.includes(user._id)) { %>
                         <i id="heart-<%= post._id %>" class="fa-solid fa-heart red"></i>
                         <% } else { %>
@@ -173,6 +173,30 @@
         document.addEventListener("click", function (event) {
             closeAllMenus();
         });
+
+         // Like Unlike functionality
+         async function likePost(postId, userId) {
+            event.preventDefault();
+            const response = await fetch(`/like/${postId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId })
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                if (data.message === "liked") {
+                    console.log(document.getElementById(`heart-${postId}`));
+                    document.getElementById(`likes-${postId}`).textContent = data.likes;
+                    document.getElementById(`heart-${postId}`).classList.add("red");
+                    console.log(document.getElementById(`heart-${postId}`));
+
+                } else {
+                    document.getElementById(`likes-${postId}`).textContent = data.likes;
+                    document.getElementById(`heart-${postId}`).classList.remove("red");
+                }
+            }
+        }
 
         // comment functionality
         const commentForm = document.getElementById('commentForm');
