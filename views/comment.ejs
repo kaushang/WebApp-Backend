@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        Comments
+    </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/stylesheets/styles.css">
+</head>
+
+<body>
+    <nav class="nav-bar">
+        <div class="nav-items user">
+            <%= user.name %>
+        </div>
+        <div class="nav-items options">
+            <a class="user go-back" href="/home"> Home</a>
+            <div class="menu-container">
+                <div>
+                    <i class="fa-solid fa-bars hamburger-button" onclick="toggleMenu()"></i>
+                </div>
+                <div class="menu-dropdown ham-dropdown" id="menu">
+                    <a href="/account">Account</a>
+                    <a id="home-logout" href="#">Log out</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <section>
+        <div class="main-cont">
+            <div class="post">
+                <h5 class="user-name">@<%= postUser.username%>
+                </h5>
+
+                <p class="content">
+                    <%=post.content%>
+                </p>
+                <% const date=post.date; %>
+                <% const dateObj=new Date(date); %>
+                <% const options={ hour: "2-digit" , minute: "2-digit" , hour12: true,
+                                timeZone: "Asia/Kolkata" }; %>
+                <% const formattedTime=dateObj.toLocaleTimeString("en-US", options); %>
+                <% const shortDayName=dateObj.toLocaleDateString("en-US",
+                                        {weekday: "short" }); %>
+
+                <div class="likeNtime" style="padding: 0px 10px 0px 0px;">
+
+                    <a href="#" class="likeNheart">
+                        <% if(post.likes.includes(user._id)) { %>
+                        <i id="heart-<%= post._id %>" class="fa-solid fa-heart red"></i>
+                        <% } else { %>
+                        <i id="heart-<%= post._id %>" class="fa-solid fa-heart"></i>
+                        <% } %>
+                        <p id="likes-<%= post._id %>" class="like-count"><%=post.likes.length%></p>
+                    </a>
+
+                    <a href="/comment/<%= post._id%>" class="likeNheart">
+                        <i class="fa-solid fa-comment"></i>
+                        <p id="comments-<%= post._id %>" class="like-count"><%=post.comments.length%></p>
+                    </a>
+
+                    <p class="dateNtime">
+                        <%= shortDayName.toUpperCase() %>, <%=formattedTime%>
+                    </p>
+
+                </div>
+            </div>
+
+            <div class="post">
+                <form id="commentForm" data-post-id="<%=post._id%>" data-user-id="<%=user._id%>" method="POST">
+                    <textarea required rows="3" id="comment" class="post-content" placeholder="Post your comment" name="content"></textarea>
+                    <input class="post-submit submit-form reply" id="reply" style="margin-top: 12px;" type="submit" value="Comment">
+                </form>
+            </div>
+
+            <div class="comments">
+                <%if(post.comments.length==0) {%>
+                <p class="sub-heading">No comments yet.</p>
+                <%} else { %>
+                <p class="sub-heading">Comments</p>
+                <%post.comments.reverse().forEach(function(element) { %>
+
+                <div class="posts">
+                    <div class="post">
+
+                        <% if(element.commentUsername == user.username) { %>
+                        <div class="menu-container">
+                            <h5 class="content user-name" id="comment-text">@<%= element.commentUsername%></h5>
+                            <i onclick="toggleMenu(event)" class="fa-solid fa-ellipsis-vertical menu-button"></i>
+                            <div class="menu-dropdown" id="menu">
+                                <a href="/delete/comment/<%=post._id%>/<%=element._id%>">Delete</a>
+                            </div>
+                        </div>
+                        <% } else { %>
+                        <h5 class="content user-name" id="comment-text">@<%= element.commentUsername%></h5>
+                        <% } %>
+
+                        <p class="content"><%=element.commentContent%></p>
+
+                        <% const date=element.commentDate; %>
+                        <% const dateObj=new Date(date); %>
+                        <% const options={ hour: "2-digit" , minute: "2-digit" , hour12: true,
+                        timeZone: "Asia/Kolkata" }; %>
+                        <% const formattedTime=dateObj.toLocaleTimeString("en-US", options); %>
+                        <% const shortDayName=dateObj.toLocaleDateString("en-US",
+                            {weekday: "short" }); %>
+
+                        <div class="likeNtime" style="padding: 0px 10px 0px 0px;">
+                            <p class="dateNtime">
+                                <%= shortDayName.toUpperCase() %>, <%=formattedTime%>
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+                <%})%>
+                <%}%>
+            </div>
+        </div>
+    </section>
+
+    <div id="logout" class="modal">
+        <div class="modal-content alert1">
+            <h3>Are you sure you want to log out?</h3>
+            <div class="btns">
+                <input id="cancelBtn" style="background-color: rgba(79, 100, 131, 0.2);" class="submit-form post-submit"
+                    type="submit" value="Cancel"></input>
+                <input id="logoutBtn" style="background-color: rgba(200, 0, 0, 0.9);" onclick=""
+                    class="submit-form post-submit" type="submit" value="Log out"></input>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const logout = document.getElementById("logout");
+        const logoutLink = document.getElementById("home-logout");
+        const cancelBtn = document.getElementById("cancelBtn");
+        const logoutBtn = document.getElementById("logoutBtn");
+
+        logoutLink.addEventListener("click", (event) => {
+            logout.style.display = "block";
+        });
+        cancelBtn.addEventListener("click", (event) => {
+            logout.style.display = "none";
+        });
+        window.addEventListener("click", (e) => {
+            if (e.target === logout) {
+                logout.style.display = "none";
+            }
+        });
+        logoutBtn.addEventListener("click", (event) => {
+            document.location.replace('/logout');
+        });
+
+        function toggleMenu(e) {
+            event.stopPropagation();
+            closeAllMenus(); // Close other menus before opening the new one
+
+            let menuContainer = event.target.closest(".menu-container");
+            let dropdown = menuContainer.querySelector(".menu-dropdown");
+            dropdown.classList.toggle("show");
+        }
+        function closeAllMenus() {
+            document.querySelectorAll(".menu-dropdown").forEach(menu => {
+                menu.classList.remove("show");
+            });
+        }
+        document.addEventListener("click", function (event) {
+            closeAllMenus();
+        });
+
+        // comment functionality
+        const commentForm = document.getElementById('commentForm');
+        commentForm.addEventListener('submit', async (event)=> {
+            event.preventDefault(); // Prevent page reload
+            const postId = commentForm.getAttribute('data-post-id');
+            const userId = commentForm.getAttribute('data-user-id');
+            const content = document.getElementById('comment').value;
+
+            const response = await fetch(`/comment/${postId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, content })
+            });
+            const result = await response.json();
+            if (response.ok) {
+                document.location.replace(`/comment/${postId}`); 
+                } else {
+                alert('Failed to post comment.');
+            }
+        }) 
+
+    </script>
+</body>
+
+</html>

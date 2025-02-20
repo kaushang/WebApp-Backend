@@ -31,7 +31,6 @@ form {
     height: fit-content;
     border-radius: 20px;
     border-top: 2px solid rgba(0, 255, 255, 0.8);
-    margin: 0px 0px 40px 0px;
     width: 100%;
 }
 .post {
@@ -63,7 +62,7 @@ input {
     background-color: #ffffff00;
 }
 .submit-form {
-    background-color: rgb(0, 100, 209); 
+    background-color: #364353; 
     color: white;
     border: none;
     transition: 0.1s;
@@ -71,7 +70,7 @@ input {
 }
 .submit-form:hover {
     cursor: pointer;
-    background-color: rgb(0, 88, 182);
+    background-color: #445468;
 }
 .post-submit {
     width: fit-content;
@@ -139,6 +138,10 @@ section {
 .profile-heading, .sub-heading {
     width: fit-content;
 }
+.sub-heading {
+    color: gray;
+    margin-top: 40px;
+}
 .nav-bar {
     margin: auto;
     width: 38%;
@@ -172,6 +175,9 @@ section {
     color: rgba(255, 255, 255, 0.9);
     margin: 0px 0px 8px 0px;
     background-color: #0f1319;
+}
+#comment-text {
+    margin-bottom: 18px;
 }
 .settings {
     display: flex;
@@ -312,6 +318,8 @@ h2, h3 {
         width: 100%;
     }
     .modal-content {
+        margin: 50% auto;
+        height: 50%;
         width: 90%;
         padding: 15px;
     }
@@ -328,7 +336,7 @@ h2, h3 {
 }
 .user {
     font-size: medium;
-    background-color: rgba(79, 100, 131, 0.4);
+    background-color: #364353;
     border-radius: 4px;
     padding: 10px 10px 10px 10px;
 }
@@ -348,8 +356,7 @@ h2, h3 {
     font-weight: normal;
     background-color: #0f1319;
     margin-bottom: 0px;
-} 
-
+}
 .menu-button, .hamburger-button {
     color: white;
     font-size: 22px;
@@ -378,7 +385,7 @@ h2, h3 {
     flex-direction: column;
     margin-top: 60px;
     width: 180px;
-    height: 100px;
+    height: fit-content;
     justify-content: space-around;
 }
 .menu-dropdown a, .go-back {
@@ -417,7 +424,7 @@ h2, h3 {
     .menu-dropdown {
         text-align: start;
         width: 140px;
-        height: 100px;
+        height: fit-content;
     }
     .menu-dropdown a {
         justify-content: start;
@@ -429,7 +436,7 @@ h2, h3 {
 .like, .fa-heart {
     background-color: #202936;
 }
-.fa-heart {
+.fa-heart, .fa-comment {
     margin-right: 8px;
 }
 .dateNtime, .like-count {
@@ -450,8 +457,17 @@ h2, h3 {
     border-radius: 22px;
     flex-direction: row;
     margin-right: 12px;
-    -webkit-tap-highlight-color: transparent; /* Removes tap highlight */
+    -webkit-tap-highlight-color: transparent;
 }
 .red {
     color: red;
+}
+.reply {
+    margin: 0px;
+    border: none;
+    background-color: #364353;
+}
+.reply:hover {
+    background-color: #445468;
+    cursor: pointer;
 }

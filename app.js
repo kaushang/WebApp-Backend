@@ -189,7 +189,6 @@ app.post("/updatepassword", isLoggedIn, async (req, res) => {
                 else {
                     return res.status(400).json({ message: "New passwords do not match" });
                 }
-
             } else {
                 return res.status(400).json({ message: "Incorrect current password" });
             }
@@ -207,6 +206,18 @@ app.post("/deleteaccount", isLoggedIn, async (req, res) => {
                 res.cookie("token", "");
                 await userModel.findOneAndDelete({ email: req.user.email });
                 await postModel.deleteMany({ user: user._id });
+
+                await postModel.updateMany(
+                    { "comments.commentUser": user._id }, // Find all posts with comments by this user
+                    { $pull: { comments: { commentUser: user._id } } } // Remove those comments
+                );
+        
+                await postModel.updateMany(
+                    { likes: user._id}, // Find posts where user liked
+                    { $pull: { likes: user._id} } // Remove user from likes array
+                );
+        
+
                 res.status(200).json({ message: "Account deleted" });
             }
             else {
@@ -252,20 +263,69 @@ app.post("/updatename", isLoggedIn, async (req, res) => {
 });
 
 app.post('/like/:postId', async (req, res) => {
-    const postId = req.params.postId; // String
-    const userId = req.body.userId; // String
-
-    const post = await postModel.findOne({_id: postId});
+    const postId = req.params.postId;
+    const userId = req.body.userId;
+    const post = await postModel.findOne({ _id: postId });
     const likedIndex = post.likes.indexOf(userId);
-
+    
     if (likedIndex === -1) {
         post.likes.push(userId); // Add like
         await post.save();
-        res.status(200).json({ likes: post.likes.length, message: "liked"}); // Return updated like count
+        res.status(200).json({ likes: post.likes.length, message: "liked" }); // Return updated like count
     } else {
         post.likes.splice(likedIndex, 1); // Remove like
         await post.save();
-        res.status(200).json({ likes: post.likes.length,message: "unliked" }); // Return updated like count
+        res.status(200).json({ likes: post.likes.length, message: "unliked" }); // Return updated like count
+    }
+});
+
+app.get('/comment/:postId', isLoggedIn, async (req, res) => {
+    if (req.user.email) {
+        const postId = req.params.postId;
+        const user = await userModel.findOne({ email: req.user.email });
+        const post = await postModel.findOne({ _id: postId });
+        const postUser = await userModel.findOne({ _id: post.user });
+        res.render('comment', { user, post, postUser })
+    } else {
+        res.redirect('/login');
+    }
+});
+
+app.post('/comment/:postId', isLoggedIn, async (req, res) => {
+    if (req.user.email) {
+        const postId = req.params.postId;
+        const post = await postModel.findOne({_id: postId});
+        const {userId, content} = req.body;
+        const user = await userModel.findOne({_id: userId});
+        
+        const comment = await postModel.findByIdAndUpdate(
+            postId,
+            {
+                $push: {
+                    comments: {
+                        commentUsername: user.username,
+                        commentUser: userId,
+                        commentContent: content,
+                        commentDate: new Date()
+                    }
+                }
+            },
+            { new: true }
+        );
+        res.status(200).json({message: "Comment published", comment });
+    } else {
+        res.redirect('/login');
+    }
+});
+
+app.get('/delete/comment/:postId/:commentId', isLoggedIn, async (req, res) => {
+    if (req.user.email) {
+        const post = await postModel.findById(req.params.postId);
+        post.comments = post.comments.filter(comment => comment._id.toString() !== req.params.commentId);
+        await post.save();
+        res.redirect(`/comment/${req.params.postId}`);
+    } else {
+        res.render('login');
     }
 });
 

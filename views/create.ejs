@@ -4,18 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        Create - <%= user.username%>
-    </title>
+    <title> Create - <%= user.username%> </title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="stylesheets/styles.css">
 </head>
 
 <body>
     <nav class="nav-bar">
-        <div class="nav-items user">
-            <%=user.name%>
-        </div>
+        <div class="nav-items user"> <%=user.name%> </div>
         <div class="nav-items options">
             <a class="user go-back" href="/home">Home</a>
             <div class="menu-container">
@@ -29,70 +25,54 @@
             </div>
         </div>
     </nav>
-
     <section>
         <div class="main-cont">
             <div class="create-post">
                 <form action="/post" method="POST">
                     <h1 class="heading post-heading">Create a post</h1>
-                    <textarea required rows="4" class="post-content" placeholder="What's on your mind?"
-                        name="content"></textarea>
+                    <textarea required rows="4" class="post-content" placeholder="What's on your mind?" name="content"></textarea>
                     <input class="submit-form post-submit" id="submit" type="submit" value="Create Post">
                 </form>
             </div>
             <div class="posts">
                 <%if(post.length==0) {%>
-                    <p class="sub-heading" style="color: gray;">No posts yet.</p>
-                    <%} else { %>
-                        <p class="sub-heading">Your posts</p>
-                        <%post.reverse().forEach(function(element) { %>
-                            <div class="post">
-
-                                <div class="menu-container">
-                                    <h5 class="user-name">@<%=user.username%>
-                                    </h5>
-                                    <i onclick="toggleMenu(event)"
-                                        class="fa-solid fa-ellipsis-vertical menu-button"></i>
-                                    <div class="menu-dropdown" id="menu">
-                                        <a href="/edit/<%=element._id%>">Edit</a>
-                                        <a href="/delete/<%=element._id%>">Delete</a>
-                                    </div>
-                                </div>
-
-                                <p class="content">
-                                    <%=element.content%>
-                                </p>
-                                <% const date=element.date; %>
-                                    <% const dateObj=new Date(date); %>
-                                        <% const options={ hour: "2-digit" , minute: "2-digit" , hour12: true,
-                                            timeZone: "Asia/Kolkata" }; %>
-                                            <% const formattedTime=dateObj.toLocaleTimeString("en-US", options); %>
-                                                <% const shortDayName=dateObj.toLocaleDateString("en-US",
-                                                    {weekday: "short" }); %>
-
-                                                    <div class="likeNtime" style="padding: 0px 10px 0px 0px;">
-                                                        <a onclick="likePost('<%= element._id %>', '<%= user._id %>')"
-                                                            href="#" class="likeNheart">
-                                                            <% if(element.likes.includes(user._id)) { %>
-                                                                <i id="heart-<%= element._id %>"
-                                                                    class="fa-solid fa-heart red"></i>
-                                                                <% } else { %>
-                                                                    <i id="heart-<%= element._id %>"
-                                                                        class="fa-solid fa-heart"></i>
-                                                                    <% } %>
-                                                                        <p id="likes-<%= element._id %>"
-                                                                            class="like-count">
-                                                                            <%=element.likes.length%>
-                                                                        </p>
-                                                        </a>
-                                                        <p class="dateNtime">
-                                                            <%= shortDayName %>, <%=formattedTime%>
-                                                        </p>
-                                                    </div>
-
-                            </div>
-                            <%})%>
-                                <%}%>
+                <p class="sub-heading">No posts yet.</p>
+                <%} else { %>
+                <p class="sub-heading">Your posts</p>
+                <%post.reverse().forEach(function(element) { %>
+                <div class="post">
+                    <div class="menu-container">
+                        <h5 class="user-name">@<%=user.username%> </h5>
+                        <i onclick="toggleMenu(event)" class="fa-solid fa-ellipsis-vertical menu-button"></i>
+                        <div class="menu-dropdown" id="menu">
+                            <a href="/edit/<%=element._id%>">Edit</a>
+                            <a href="/delete/<%=element._id%>">Delete</a>
+                        </div>
+                    </div>
+                    <p class="content" style="margin-top: 18px;"> <%=element.content%> </p>
+                    <% const date=element.date; %>
+                    <% const dateObj=new Date(date); %>
+                    <% const options={ hour: "2-digit" , minute: "2-digit" , hour12: true, timeZone: "Asia/Kolkata" }; %>
+                    <% const formattedTime=dateObj.toLocaleTimeString("en-US", options); %>
+                    <% const shortDayName=dateObj.toLocaleDateString("en-US", {weekday: "short" }); %>
+                    <div class="likeNtime" style="padding: 0px 10px 0px 0px;">
+                        <a onclick="likePost('<%= element._id %>', '<%= user._id %>')" href="#" class="likeNheart">
+                            <% if(element.likes.includes(user._id)) { %>
+                            <i id="heart-<%= element._id %>" class="fa-solid fa-heart red"></i>
+                            <% } else { %>
+                            <i id="heart-<%= element._id %>" class="fa-solid fa-heart"></i>
+                            <% } %>
+                            <p id="likes-<%= element._id %>" class="like-count"> <%=element.likes.length%> </p>
+                        </a>
+                        <a href="/comment/<%= element._id%>" class="likeNheart">
+                            <i class="fa-solid fa-comment"></i>
+                            <p id="comments-<%= element._id %>" class="like-count"> <%=element.comments.length%> </p>
+                        </a>
+                        <p class="dateNtime"> <%= shortDayName.toUpperCase() %>, <%=formattedTime%> </p>
+                    </div>
+                </div>
+                <%})%>
+                <%}%>
             </div>
         </div>
     </section>
@@ -139,6 +119,7 @@
             let dropdown = menuContainer.querySelector(".menu-dropdown");
             dropdown.classList.toggle("show");
         }
+
         function closeAllMenus() {
             document.querySelectorAll(".menu-dropdown").forEach(menu => {
                 menu.classList.remove("show");
@@ -154,8 +135,12 @@
             event.preventDefault();
             const response = await fetch(`/like/${postId}`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId })
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    userId
+                })
             });
 
             const data = await response.json();

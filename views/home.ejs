@@ -35,42 +35,51 @@
         <div class="main-cont">
             <div class="posts">
                 <%if(posts.length==0) {%>
-                    <p class="sub-heading" style="color: gray;">No posts yet.</p>
-                    <%} else { %>
-                        <%posts.reverse().forEach(function(element) { %>
-                            <div class="post">
-                                <h5 class="content user-name">@<%=element.user.username%>
-                                </h5>
+                <p class="sub-heading">No posts yet.</p>
+                <%} else { %>
+                <%posts.reverse().forEach(function(element) { %>
+                <div class="post">
+                    <h5 class="content user-name">@<%=element.user.username%>
+                    </h5>
 
-                                <p class="content">
-                                    <%=element.content%>
-                                </p>
-                                <% const date=element.date; %>
-                                    <% const dateObj=new Date(date); %>
-                                        <% const options={ hour: "2-digit" , minute: "2-digit" , hour12: true,
+                    <p class="content">
+                        <%=element.content%>
+                    </p>
+                    <% const date=element.date; %>
+                    <% const dateObj=new Date(date); %>
+                    <% const options={ hour: "2-digit" , minute: "2-digit" , hour12: true,
                                             timeZone: "Asia/Kolkata" }; %>
-                                            <% const formattedTime=dateObj.toLocaleTimeString("en-US", options); %>
-                                                <% const shortDayName=dateObj.toLocaleDateString("en-US",
+                    <% const formattedTime=dateObj.toLocaleTimeString("en-US", options); %>
+                    <% const shortDayName=dateObj.toLocaleDateString("en-US",
                                                     {weekday: "short" }); %>
 
-                                                    <div class="likeNtime" style="padding: 0px 10px 0px 0px;">
-                                                        <a onclick="likePost('<%= element._id %>', '<%= user._id %>')"
-                                                            href="#" class="likeNheart">
-                                                            <% if(element.likes.includes(user._id)) { %>
-                                                                <i id="heart-<%= element._id %>" class="fa-solid fa-heart red"></i>
-                                                            <% } else { %>
-                                                                <i id="heart-<%= element._id %>" class="fa-solid fa-heart"></i>
-                                                            <% } %>
-                                                            <p id="likes-<%= element._id %>" class="like-count"><%=element.likes.length%></p>
-                                                        </a>
-                                                        <p class="dateNtime">
-                                                            <%= shortDayName %>, <%=formattedTime%>
-                                                        </p>
-                                                    </div>
+                    <div class="likeNtime" style="padding: 0px 10px 0px 0px;">
+                        <a onclick="likePost('<%= element._id %>', '<%= user._id %>')" href="#" class="likeNheart">
+                            <% if(element.likes.includes(user._id)) { %>
+                            <i id="heart-<%= element._id %>" class="fa-solid fa-heart red"></i>
+                            <% } else { %>
+                            <i id="heart-<%= element._id %>" class="fa-solid fa-heart"></i>
+                            <% } %>
+                            <p id="likes-<%= element._id %>" class="like-count">
+                                <%=element.likes.length%>
+                            </p>
+                        </a>
 
-                            </div>
-                            <%})%>
-                                <%}%>
+                        <a href="/comment/<%= element._id%>" class="likeNheart">
+                            <i class="fa-solid fa-comment"></i>
+                            <p id="comments-<%= element._id %>" class="like-count">
+                                <%=element.comments.length%>
+                            </p>
+                        </a>
+
+                        <p class="dateNtime">
+                            <%= shortDayName.toUpperCase() %>, <%=formattedTime%>
+                        </p>
+                    </div>
+
+                </div>
+                <%})%>
+                <%}%>
             </div>
         </div>
     </section>
@@ -141,7 +150,7 @@
                     document.getElementById(`likes-${postId}`).textContent = data.likes;
                     document.getElementById(`heart-${postId}`).classList.add("red");
                     console.log(document.getElementById(`heart-${postId}`));
-                    
+
                 } else {
                     document.getElementById(`likes-${postId}`).textContent = data.likes;
                     document.getElementById(`heart-${postId}`).classList.remove("red");
