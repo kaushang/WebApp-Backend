@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const postModel = require('./models/postModel');
+const cors = require("cors");
 
 const mongoose = require('mongoose');
 const { type } = require('os');
@@ -19,6 +20,7 @@ mongoose.connect(process.env.MONGO_URI, {
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.error(err));
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
@@ -29,6 +31,7 @@ app.get('/', isLoggedIn, (req, res) => {
     if (req.user.email) {
         res.redirect('/home');
     } else {
+        // res.render('index');
         res.render('index');
     }
 });
@@ -340,6 +343,6 @@ function isLoggedIn(req, res, next) {
     }
 }
 
-app.listen(port, () => {
-    console.log('Server running at port: ', port);
+app.listen(port, '0.0.0.0', () => {
+    console.log(`Server running at port: http://localhost:${port}/`);
 });
